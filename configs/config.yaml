@@ -1,0 +1,121 @@
+# Configuration file for depression detection project
+
+# Dataset Configuration
+dataset:
+  name: 'daic-woz'  # daic-woz, d-vlog, e-daic
+  data_dir: 'data'
+  raw_data_dir: 'data/datasets/DAIC-WOZ'
+  processed_data_dir: 'data/processed/DAIC-WOZ'
+  modalities:
+    - text
+    - audio
+    - facial
+
+# Data Loading Configuration
+data_loading:
+  batch_size: 32
+  num_workers: 4
+  shuffle: true
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+  sample_rate: 16000  # Hz for audio
+
+# Text Feature Extraction
+text_features:
+  extract_linguistic: true
+  extract_sentiment: true
+  extract_psycholinguistic: true
+  extract_depression_indicators: true
+  n_features: 50
+
+# Audio Feature Extraction
+audio_features:
+  extract_mfcc: true
+  extract_spectral: true
+  extract_prosodic: true
+  extract_voice_quality: true
+  n_mfcc: 13
+  n_features: 100
+  sample_rate: 16000
+
+# Facial Feature Extraction
+facial_features:
+  extract_landmarks: true
+  extract_eye_features: true
+  extract_head_pose: true
+  extract_skin_features: true
+  extract_expression_features: true
+  n_features: 100
+  sample_every_n_frames: 5
+
+# Model Configuration
+model:
+  fusion_strategy: 'mid'  # early, mid, late, transformer
+  text_dim: 50
+  audio_dim: 100
+  facial_dim: 100
+  hidden_dim: 512
+  fusion_dim: 256
+  num_heads: 4
+  num_layers: 2
+  dropout: 0.3
+  output_dim: 2  # Binary classification
+
+# Modality Weights
+modality_weights:
+  text_weight: 1.0
+  audio_weight: 1.0
+  facial_weight: 1.0
+
+# Training Configuration
+training:
+  epochs: 50
+  learning_rate: 0.001
+  optimizer: 'adam'  # adam, sgd
+  loss_function: 'crossentropy'  # crossentropy, mse
+  early_stopping_patience: 10
+  weight_decay: 1e-4
+  gradient_clip: 1.0
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score
+    - auc_roc
+    - confusion_matrix
+  compute_per_modality: true
+  save_predictions: true
+
+# Output Configuration
+output:
+  model_dir: 'models/checkpoints'
+  log_dir: 'logs'
+  results_dir: 'results'
+  save_best_model: true
+  save_freq: 5  # epochs
+  log_freq: 10  # batches
+
+# Paths
+paths:
+  daic_woz_url: 'https://dcapswoz.ict.usc.edu/'
+  daic_woz_instructions: 'docs/DAIC_WOZ_SETUP.md'
+  pretrained_models: 'models/pretrained'
+  
+# Random Seed
+random_seed: 42
+
+# Device Configuration
+device:
+  use_gpu: true
+  gpu_id: 0
+  multi_gpu: false
+
+# Debug Configuration
+debug:
+  verbose: true
+  save_intermediate_features: false
+  visualize_data: false
